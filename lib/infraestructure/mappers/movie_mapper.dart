@@ -20,7 +20,7 @@ class MovieMapper {
       popularity: moviedb.popularity,
       posterPath: moviedb.posterPath != ''
           ? 'https://image.tmdb.org/t/p/w500/${moviedb.posterPath}'
-          : 'https://img.freepik.com/vector-gratis/poster-error-404-pagina-no-encontrada-usar-sitio-web_1284-49337.jpg',
+          : 'no-poster',
       releaseDate: moviedb.releaseDate,
       title: moviedb.title,
       video: moviedb.video,
