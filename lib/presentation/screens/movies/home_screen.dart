@@ -48,57 +48,74 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final List<Movie> nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final List<Movie> slideShowMovies = ref.watch(moviesSlidesshowProvider);
 
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          CustomAppbar(),
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomAppbar(),
+            titlePadding: EdgeInsets.zero,
+          ),
+        ),
+        // el delegate es una funcion para crear los slivers
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return Column(
+              children: [
+                MoviesSlideshow(movies: slideShowMovies),
+                // Expanded(
+                //   child: ListView.builder(
+                //     itemCount: nowPlayingMovies.length,
+                //     itemBuilder: (context, index) {
+                //       final movie = nowPlayingMovies[index];
+                //       return ListTile(
+                //         title: Text(movie.title),
+                //       );
+                //     },
+                //   ),
+                // ),
 
-          MoviesSlideshow(movies: slideShowMovies),
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: nowPlayingMovies.length,
-          //     itemBuilder: (context, index) {
-          //       final movie = nowPlayingMovies[index];
-          //       return ListTile(
-          //         title: Text(movie.title),
-          //       );
-          //     },
-          //   ),
-          // ),
-
-          MovieHorizontaListview(
-            movies: nowPlayingMovies,
-            title: 'En Cines',
-            subtitle: 'Lunes 20',
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          ),
-          MovieHorizontaListview(
-            movies: nowPlayingMovies,
-            title: 'Proximamente',
-            subtitle: 'En este mes',
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          ),
-          MovieHorizontaListview(
-            movies: nowPlayingMovies,
-            title: 'Populares',
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          ),
-          MovieHorizontaListview(
-            movies: nowPlayingMovies,
-            title: 'Mejor Calificadas',
-            subtitle: 'All Times',
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          ),
-          const SizedBox(
-            height: 20,
-          )
-        ],
-      ),
-    ));
+                MovieHorizontaListview(
+                  movies: nowPlayingMovies,
+                  title: 'En Cines',
+                  subtitle: 'Lunes 20',
+                  loadNextPage: () => ref
+                      .read(nowPlayingMoviesProvider.notifier)
+                      .loadNextPage(),
+                ),
+                MovieHorizontaListview(
+                  movies: nowPlayingMovies,
+                  title: 'Proximamente',
+                  subtitle: 'En este mes',
+                  loadNextPage: () => ref
+                      .read(nowPlayingMoviesProvider.notifier)
+                      .loadNextPage(),
+                ),
+                MovieHorizontaListview(
+                  movies: nowPlayingMovies,
+                  title: 'Populares',
+                  loadNextPage: () => ref
+                      .read(nowPlayingMoviesProvider.notifier)
+                      .loadNextPage(),
+                ),
+                MovieHorizontaListview(
+                  movies: nowPlayingMovies,
+                  title: 'Mejor Calificadas',
+                  subtitle: 'All Times',
+                  loadNextPage: () => ref
+                      .read(nowPlayingMoviesProvider.notifier)
+                      .loadNextPage(),
+                ),
+                const SizedBox(
+                  height: 20,
+                )
+              ],
+            );
+          },
+          childCount: 1,
+        ))
+      ],
+    );
   }
 }
