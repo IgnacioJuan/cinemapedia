@@ -35,6 +35,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     super.initState();
     // Llamamos a la funcion del provider
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
   }
 
   @override
@@ -46,6 +47,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     // Obtenemos la lista de movies del provider
     final List<Movie> nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final List<Movie> popularMovies = ref.watch(popularMoviesProvider);
+
     final List<Movie> slideShowMovies = ref.watch(moviesSlidesshowProvider);
 
     return CustomScrollView(
@@ -93,11 +96,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                       .loadNextPage(),
                 ),
                 MovieHorizontaListview(
-                  movies: nowPlayingMovies,
+                  movies: popularMovies,
                   title: 'Populares',
-                  loadNextPage: () => ref
-                      .read(nowPlayingMoviesProvider.notifier)
-                      .loadNextPage(),
+                  loadNextPage: () =>
+                      ref.read(popularMoviesProvider.notifier).loadNextPage(),
                 ),
                 MovieHorizontaListview(
                   movies: nowPlayingMovies,

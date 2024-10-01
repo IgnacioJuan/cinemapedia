@@ -10,6 +10,13 @@ final nowPlayingMoviesProvider =
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
 
+final popularMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  // Instanciamos y extraemos la referencia de la funcioni
+  final fetchMoreMovies = ref.watch(movieRepositoryProvider).getPopular;
+  return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+});
+
 // Definimos una funcion abstracta, el tipo que retorna y sus paramentros
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
