@@ -1,5 +1,6 @@
 import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/presentation/providers/movies/movies_providers.dart';
+import 'package:cinemapedia/presentation/providers/providers.dart';
+import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +14,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: _HomeView(),
       ),
+      bottomNavigationBar: CustomBottomNavigation(),
     );
   }
 }
@@ -44,22 +46,59 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     // Obtenemos la lista de movies del provider
     final List<Movie> nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final List<Movie> slideShowMovies = ref.watch(moviesSlidesshowProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Listado de peliculas (Extraidas del provider)'),
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomAppbar(),
+
+          MoviesSlideshow(movies: slideShowMovies),
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: nowPlayingMovies.length,
+          //     itemBuilder: (context, index) {
+          //       final movie = nowPlayingMovies[index];
+          //       return ListTile(
+          //         title: Text(movie.title),
+          //       );
+          //     },
+          //   ),
+          // ),
+
+          MovieHorizontaListview(
+            movies: nowPlayingMovies,
+            title: 'En Cines',
+            subtitle: 'Lunes 20',
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontaListview(
+            movies: nowPlayingMovies,
+            title: 'Proximamente',
+            subtitle: 'En este mes',
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontaListview(
+            movies: nowPlayingMovies,
+            title: 'Populares',
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontaListview(
+            movies: nowPlayingMovies,
+            title: 'Mejor Calificadas',
+            subtitle: 'All Times',
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          const SizedBox(
+            height: 20,
+          )
+        ],
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: nowPlayingMovies.length,
-          itemBuilder: (context, index) {
-            final movie = nowPlayingMovies[index];
-            return ListTile(
-              title: Text(movie.title),
-            );
-          },
-        ),
-      ),
-    );
+    ));
   }
 }
