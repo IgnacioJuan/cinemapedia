@@ -17,6 +17,20 @@ final popularMoviesProvider =
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
 
+final upComingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  // Instanciamos y extraemos la referencia de la funcioni
+  final fetchMoreMovies = ref.watch(movieRepositoryProvider).getUpComing;
+  return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+});
+
+final topRatedMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  // Instanciamos y extraemos la referencia de la funcioni
+  final fetchMoreMovies = ref.watch(movieRepositoryProvider).getTopRated;
+  return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+});
+
 // Definimos una funcion abstracta, el tipo que retorna y sus paramentros
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
