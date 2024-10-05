@@ -1,4 +1,13 @@
+import 'package:isar/isar.dart';
+
+// https://isar.dev/es/tutorials/quickstart.html#_3-ejecuta-el-generador-de-codigo
+// flutter pub run build_runner build, para generar el archivo necesario
+part 'movie.g.dart';
+
+@collection
 class Movie {
+  Id? isarId;
+
   final bool adult;
   final String backdropPath;
   final List<String> genreIds;
