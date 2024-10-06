@@ -182,13 +182,30 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
+// Instanciamos un proveedor
+// Family permite parametros
+// Autodispose elimina el provider o su elemento de memoria
+// final isFavoriteProvider =
+//     FutureProvider.family.autoDispose((ref, int movieId) {
+//   final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+
+//   return localStorageRepository.isMovieFavorite(movieId);
+// });
+
+//* Menu que se expande o contrae al deslizar hacia arriba
 class _CustomSliverAppbar extends ConsumerWidget {
+  // PROPIEDADES
   final Movie movie;
+  // CONSTRUCTOR
   const _CustomSliverAppbar({required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Instancia para los tamaños del dispositivo
     final size = MediaQuery.of(context).size;
+
+    // Consumimos el proveedor
+    final isFavorite = ref.watch(isFavoriteProvider(movie.id));
 
     return SliverAppBar(
       backgroundColor: Colors.black,
@@ -196,14 +213,17 @@ class _CustomSliverAppbar extends ConsumerWidget {
       foregroundColor: Colors.white,
       actions: [
         IconButton(
-            onPressed: () {
-              ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
-            },
-            // icon: const Icon(Icons.favorite_border_outlined))
-            icon: const Icon(
-              Icons.favorite_rounded,
-              color: Colors.red,
-            ))
+          onPressed: () {
+            // Ejecutamos el toggle Favorite
+            ref
+                .read(isFavoriteProvider(movie.id).notifier)
+                .toggleFavorite(movie);
+          },
+          // icon: const Icon(Icons.favorite_border_outlined))
+          icon: isFavorite
+              ? const Icon(Icons.favorite_rounded, color: Colors.red)
+              : const Icon(Icons.favorite_border_outlined),
+        )
       ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
